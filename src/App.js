@@ -1,20 +1,14 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react';
+import Navbar from './components/Navbar';
+import ProjectListView from './components/ProjectListView';
 
 function App() {
-  const [projectList, setProjectList] = useState([])
-
-  useEffect(() => {
-    axios.get('http://localhost:8000/projects/')
-    .then((response) => setProjectList(response.data))
-  }, [])
 
   return (
-    <div className="App">
-      {projectList.map(project => (
-        <p>{project.title}</p>
-      ))}
-    </div>
+    <>
+    <Navbar />
+    <ProjectListView />
+    <button class="btn btn-primary">Button</button>
+    </>
   );
 }
 
