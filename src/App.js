@@ -6,8 +6,10 @@ function App() {
   return (
     <>
     <Navbar />
-    <ProjectListView />
-    <button class="btn btn-primary">Button</button>
+    <div className='m-3'>
+      <ProjectListView />
+      <button class="btn btn-primary">Button</button>
+    </div>
     </>
   );
 }
