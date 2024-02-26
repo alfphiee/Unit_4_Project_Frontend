@@ -1,13 +1,14 @@
 import Navbar from './components/Navbar';
-import ProjectListView from './components/ProjectListView';
+import MainPage from './pages/MainPage';
 
 function App() {
 
   return (
     <>
     <Navbar />
-    <ProjectListView />
-    <button class="btn btn-primary">Button</button>
+    <div className='m-3'>
+      <MainPage />
+    </div>
     </>
   );
 }
