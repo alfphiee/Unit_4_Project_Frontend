@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import ProjectView from "./ProjectView"
@@ -60,7 +61,9 @@ export default function ProjectListView() {
     </div>
       <div className='grid grid-cols-3'>
         {projectList.map((project) => (
-          <ProjectView project={project} />
+          <Link to={`/projects/${project.id}`}>
+            <ProjectView project={project} />
+          </Link>
         ))}
         <div className="card m-2 bg-base-300 shadow-xl">
           +

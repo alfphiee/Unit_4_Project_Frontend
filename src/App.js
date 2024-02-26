@@ -1,5 +1,5 @@
 import Navbar from './components/Navbar';
-import ProjectListView from './components/ProjectListView';
+import MainPage from './pages/MainPage';
 
 function App() {
 
@@ -7,8 +7,7 @@ function App() {
     <>
     <Navbar />
     <div className='m-3'>
-      <ProjectListView />
-      <button class="btn btn-primary">Button</button>
+      <MainPage />
     </div>
     </>
   );
