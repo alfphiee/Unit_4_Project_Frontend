@@ -9,6 +9,10 @@ import { Plus } from 'lucide-react'
 export default function ProjectListView() {
   const [projectList, setProjectList] = useState([])
 
+  const addProject = (project) => {
+    setProjectList([...projectList, project])
+  }
+
   useEffect(() => {
     axios.get('http://localhost:8000/projects/')
     .then((response) => setProjectList(response.data))
@@ -28,7 +32,7 @@ export default function ProjectListView() {
     <form method="dialog">
       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
-    <CreateProjectForm />
+    <CreateProjectForm onSubmit={addProject} />
   </div>
 </dialog>
         </div>
@@ -61,9 +65,8 @@ export default function ProjectListView() {
     </div>
       <div className='grid grid-cols-3'>
         {projectList.map((project) => (
-          <Link to={`/projects/${project.id}`}>
+
             <ProjectView project={project} />
-          </Link>
         ))}
         <div className="card m-2 bg-base-300 shadow-xl">
           +
