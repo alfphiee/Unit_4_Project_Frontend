@@ -19,10 +19,10 @@ function App() {
   }, [isAuth]);
 
   return (
-    <> 
-    <Navbar isAuth={isAuth} setIsAuth={setIsAuth} />
-    {!isAuth ? <AuthPage /> : <MainPage setIsAuth={setIsAuth} />}
-    </>
+    <div className='flex flex-col h-screen'>
+    <div><Navbar isAuth={isAuth} setIsAuth={setIsAuth} /></div>
+    <div className='flex-1 overflow-y-auto'>{!isAuth ? <AuthPage /> : <MainPage setIsAuth={setIsAuth} />}</div>
+    </div>
   );
 }
 

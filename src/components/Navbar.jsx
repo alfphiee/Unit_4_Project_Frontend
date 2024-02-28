@@ -2,12 +2,12 @@ import { Link } from "react-router-dom"
 
 export default function Navbar({isAuth, setIsAuth}) {
   return (
-    <div className="navbar fixed top-0 bg-base-300">
+    <div className="navbar sticky top-0 bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">\BREAK<span className="ml-[-5px] text-secondary">down</span></a>
+        <Link to='/'><button className="btn btn-ghost text-xl">\BREAK<span className="ml-[-5px] text-secondary">down</span></button></Link>
       </div>
       <div>
-        <ul class="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1">
           <li><a>Tasks</a></li>
           <li><a>Projects</a></li>
         </ul>
@@ -20,9 +20,9 @@ export default function Navbar({isAuth, setIsAuth}) {
       </div>
       <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-300 rounded-box w-52">
         <li>
-          <a className="justify-between">
+          <Link className="justify-between">
             Profile
-          </a>
+          </Link>
         </li>
         <li onClick={()=> setIsAuth(false)}><Link to='/logout'>Logout</Link></li>
       </ul>

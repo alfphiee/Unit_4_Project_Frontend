@@ -14,7 +14,11 @@ export default function ProjectListView() {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8000/projects/')
+    axios.get('http://localhost:8000/projects/', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("access_token")}`
+      }
+  })
     .then((response) => setProjectList(response.data))
   }, [])
 

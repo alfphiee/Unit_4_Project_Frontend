@@ -26,7 +26,7 @@ export default function AuthPage() {
 
 
   return (
-    <div className="hero min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+    <div className="hero min-h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
     <div className="hero-content w-full text-center grid grid-cols-2">
       <div className="max-w-md text-white">
         <img className="invert mb-7" src={logo} />
