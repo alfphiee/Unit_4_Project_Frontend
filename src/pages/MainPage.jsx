@@ -14,12 +14,21 @@ export default function MainPage({setIsAuth}) {
     setProjectList(projectList.filter(project => project.id !== projectId))
   }
 
+  const updateProject = (updatedProject) => {
+    const newProjectList = projectList.map(project => {
+      if(project.id === updatedProject.id) {
+        return updatedProject
+      } return project
+    })
+    setProjectList(newProjectList)
+  }
+
   return (
     <div className="mx-3 h-full">
     <Routes>
         <Route path='/' element={<ProjectListView projectList={projectList} setProjectList={setProjectList} />}/>
         <Route path='/projects/:projectId/tasks' element={<TaskListView />} />
-        <Route path='/projects/:projectId' element={<ProjectDetailView deleteProject={deleteProject} />} />
+        <Route path='/projects/:projectId' element={<ProjectDetailView deleteProject={deleteProject} updateProject={updateProject} />} />
         <Route path='/logout' element={<Logout setIsAuth={setIsAuth} />} />
     </Routes>
     </div>

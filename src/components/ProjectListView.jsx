@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+
 import ProjectView from "./ProjectView"
 import CreateProjectForm from './CreateProjectForm'
 import { Plus } from 'lucide-react'
 
 export default function ProjectListView({projectList, setProjectList}) {
-
+  
   const addProject = (project) => {
     setProjectList([...projectList, project])
   }
@@ -67,7 +68,7 @@ export default function ProjectListView({projectList, setProjectList}) {
     </div>
       <div className='grid flex-1 overflow-y-auto grid-cols-3'>
         {projectList.map((project) => (
-            <ProjectView project={project} />
+            <ProjectView key={project.id} project={project} />
         ))}
       </div>
     </div>

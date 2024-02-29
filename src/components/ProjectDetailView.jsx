@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 import axios from 'axios';
+import { useUser } from "../context/UserContext";
 
-export default function ProjectDetailView({deleteProject}) {
+export default function ProjectDetailView({deleteProject, updateProject}) {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState({
-    title: '',
-    description: '',
-    start_date: '',
-    end_date: '',
-    status: '',
-    github_url: '',
-    owner: '',
-    collaborators: []
-  })
+  const { userId } = useUser()
+  
+    const [project, setProject] = useState({
+      title: '',
+      description: '',
+      start_date: '',
+      end_date: '',
+      status: '',
+      github_url: '',
+      owner: '',
+      collaborators: []
+    })
+
+    const [showSuccess, setShowSuccess] =  useState(false)
+
+  const isOwner = userId === project.owner.id
 
   const handleChange = (event) => {
     setProject({...project,
@@ -23,16 +31,25 @@ export default function ProjectDetailView({deleteProject}) {
     })
   }
 
-  const handleDelete = () => {
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`)
+  const handleDelete = async () => {
+    const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`)
     deleteProject(projectId)
     navigate('/')
   }
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`, project)
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`, project)
+      updateProject(project)
+      setShowSuccess(true)
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000); 
+    } catch (error) {
+      console.error("An Error occured while updating the project:", error)
+    }
   }
 
   useEffect(() => {
@@ -59,7 +76,7 @@ export default function ProjectDetailView({deleteProject}) {
           <Link to={`/projects/${projectId}/tasks`}>
             <button className="btn btn-secondary"><span className="text-white">View Tasks</span></button>
           </Link>
-          <button className="ml-2 btn btn-ghost" onClick={()=>document.getElementById('confirm_delete').showModal()}>Delete</button>
+          {isOwner && <button className="ml-2 btn btn-ghost" onClick={()=>document.getElementById('confirm_delete').showModal()}>Delete</button>}
           <dialog id="confirm_delete" className="modal">
   <div className="modal-box">
     <form method="dialog">
@@ -74,27 +91,32 @@ export default function ProjectDetailView({deleteProject}) {
         </div>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4 items-center ">
-        <label htmlFor="title" className="text-right">Name</label>
-        <input type="text" name="title" value={project.title} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" />
-        <label htmlFor="title" className="text-right">Description</label>
-        <textarea className="textarea col-span-3 textarea-bordered" value={project.description} onChange={handleChange} placeholder="Bio"></textarea>
-        <label htmlFor="start_date" className="text-right">Start Date</label>
-        <input type="date" name="start_date" value={project.start_date} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" />
-        <label htmlFor="end_date" className="text-right">End Date</label>
-        <input type="date" name="end_date" value={project.end_date} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" />
-        <label htmlFor="status" className="text-right">Status</label>
-        <select className="select select-bordered col-span-3 w-full max-w-xs" name="status" value={project.status} onChange={handleChange}>
+        <label htmlFor="project-title" className="text-right">Name</label>
+        <input type="text" id="project-title" name="title" value={project.title} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner} />
+        <label htmlFor="project-desc" className="text-right">Description</label>
+        <textarea className="textarea col-span-3 textarea-bordered" id="project-desc" name="description" value={project.description} onChange={handleChange} placeholder="Project Description" disabled={!isOwner}></textarea>
+        <label htmlFor="project-start-date" className="text-right">Start Date</label>
+        <input type="date" id="project-start-date" name="start_date" value={project.start_date} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner}/>
+        <label htmlFor="project-end-date" className="text-right">End Date</label>
+        <input type="date" id="project-end-date" name="end_date" value={project.end_date} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner}/>
+        <label htmlFor="project-status" className="text-right">Status</label>
+        <select className="select select-bordered col-span-3 w-full max-w-xs" id="project-status" name="status" value={project.status} onChange={handleChange} disabled={!isOwner}>
           {options.map((option) => (
             <option key={option[0]} value={option[0]}>
               {option[1]}
             </option>
           ))}
         </select>
-        <label htmlFor="github_url" className="text-right">Github Link</label>
-        <input type="text" name="github_url" value={project.github_url} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" />
+        <label htmlFor="project-github-url" className="text-right">Github Link</label>
+        <input type="text" id="project-github-url" name="github_url" value={project.github_url} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner}/>
         <div></div>
-        <button type="submit" className="btn btn-primary">Save Changes</button>
+        {isOwner && <button type="submit" className="btn btn-primary">Save Changes</button>}
       </form>
+      {showSuccess && <div className="p-3 toast toast-end">
+        <div className="alert alert-success">
+          <span>Changes Saved</span>
+        </div>
+      </div>}
     </div>
   )
 }

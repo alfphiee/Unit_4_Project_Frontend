@@ -6,10 +6,11 @@ export default function Navbar({isAuth, setIsAuth}) {
       <div className="flex-1">
         <Link to='/'><button className="btn btn-ghost text-xl">\BREAK<span className="ml-[-5px] text-secondary">down</span></button></Link>
       </div>
+      {isAuth &&
+      <>
       <div>
         <ul className="menu menu-horizontal px-1">
-          <li><a>Tasks</a></li>
-          <li><a>Projects</a></li>
+          <li><a>My Tasks</a></li>
         </ul>
       </div>
       <div className="dropdown dropdown-end">
@@ -27,6 +28,7 @@ export default function Navbar({isAuth, setIsAuth}) {
         <li onClick={()=> setIsAuth(false)}><Link to='/logout'>Logout</Link></li>
       </ul>
     </div>
+    </>}
     </div>
   )
 }
