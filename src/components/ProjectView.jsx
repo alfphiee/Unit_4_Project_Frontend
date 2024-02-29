@@ -11,7 +11,10 @@ export default function ProjectView({ project }) {
 
 
   return (
-    <Link to={`/projects/${project.id}`}>
+    <Link to={{
+      pathname: `/projects/${project.id}`,
+      state: { project }
+    }}>
     <div className="card m-2 lg:card-side bg-base-300 hover:bg-base-200 shadow-xl">
   <figure className="lg:w-[150px] ml-2"><div className="radial-progress text-primary" style={{"--value":70}} role="progressbar">70%</div>
 </figure>

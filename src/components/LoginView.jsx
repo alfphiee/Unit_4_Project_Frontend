@@ -43,7 +43,7 @@ export default function Login() {
             </label>
         </div>
       <div className="mt-2">
-        <button class="btn btn-secondary w-full" type="submit" variant="primary">
+        <button className="btn btn-secondary w-full" type="submit" variant="primary">
             <span className="text-white">
           Login
           </span>
