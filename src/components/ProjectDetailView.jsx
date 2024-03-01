@@ -18,9 +18,11 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
       status: '',
       github_url: '',
       owner: '',
-      collaborators: []
+      collaborators: [],
     })
-
+    const [collaboratorEmail, setCollaboratorEmail] = useState('')
+    const [collaboratorEmailList, setCollaboratorEmailList] = useState(project.collaborators.map(collaborator => collaborator.email))
+    const [addCollab, setAddCollab] = useState(false)
     const [showSuccess, setShowSuccess] =  useState(false)
 
   const isOwner = userId === project.owner.id
@@ -31,17 +33,27 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
     })
   }
 
+   const handleAddCollaborator = () => {
+    setCollaboratorEmailList([...collaboratorEmailList, collaboratorEmail])
+    setAddCollab(false)
+   }
+
+   const handleDeleteCollaborator = (collaboratorIndex) => {
+    const newEmailList = collaboratorEmailList.filter((_, index) => index !== collaboratorIndex)
+    setCollaboratorEmailList(newEmailList)
+   }
+
   const handleDelete = async () => {
     const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`)
     deleteProject(projectId)
     navigate('/')
   }
 
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`, project)
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`, 
+      { ...project, collaborators_emails: collaboratorEmailList })
       updateProject(project)
       setShowSuccess(true)
       setTimeout(() => {
@@ -64,6 +76,7 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
       return acc;
     }, {});
     setProject(sanitizedData);
+    setCollaboratorEmailList(sanitizedData.collaborators.map(collaborator => collaborator.email))
   });
   }, [])
 
@@ -90,11 +103,12 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
 </dialog>
         </div>
       </div>
+      <div className="flex">
       <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4 items-center ">
         <label htmlFor="project-title" className="text-right">Name</label>
         <input type="text" id="project-title" name="title" value={project.title} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner} />
         <label htmlFor="project-desc" className="text-right">Description</label>
-        <textarea className="textarea col-span-3 textarea-bordered" id="project-desc" name="description" value={project.description} onChange={handleChange} placeholder="Project Description" disabled={!isOwner}></textarea>
+        <textarea className="textarea col-span-3 max-w-xs textarea-bordered" id="project-desc" name="description" value={project.description} onChange={handleChange} placeholder="Project Description" disabled={!isOwner}></textarea>
         <label htmlFor="project-start-date" className="text-right">Start Date</label>
         <input type="date" id="project-start-date" name="start_date" value={project.start_date} onChange={handleChange} className="input input-bordered col-span-3 w-full max-w-xs" disabled={!isOwner}/>
         <label htmlFor="project-end-date" className="text-right">End Date</label>
@@ -112,6 +126,45 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
         <div></div>
         {isOwner && <button type="submit" className="btn btn-primary">Save Changes</button>}
       </form>
+      <div className="flex ml-4 flex-1 flex-col">
+      <h3 className="text-2xl">Collaborators</h3>
+      <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th></th>
+        <th>Email</th>
+        {isOwner && <th>Action</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {collaboratorEmailList.map((collaborator, index) => (
+            <tr>
+              <th>{index+1}</th>
+              <td>{collaborator}</td>
+              {isOwner && <td><button onClick={() => handleDeleteCollaborator(index)} className="badge badge-error gap-2">Remove</button></td>}
+            </tr>
+      ))}
+      
+      {!addCollab && isOwner
+      &&
+      <tr>
+        <td></td>
+        <td><button onClick={() => setAddCollab(!addCollab) } className="link link-primary">Add New Collaborator</button></td>
+      </tr>}
+      {addCollab && isOwner
+      &&
+      <tr>
+        <td>{project.collaborators.length + 1}</td>
+        <td><input type="text" value={collaboratorEmail} onChange={(e) => setCollaboratorEmail(e.target.value)} className="input input-bordered col-span-3 w-full max-w-xs"/></td>
+        <td><button onClick={handleAddCollaborator} className="badge badge-success gap-2">Add</button></td>
+      </tr>
+    }
+
+    </tbody>
+  </table>
+      </div>
+      </div>
       {showSuccess && <div className="p-3 toast toast-end">
         <div className="alert alert-success">
           <span>Changes Saved</span>
