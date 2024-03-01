@@ -7,9 +7,6 @@ export default function EditTaskView({ task, assignees, editTaskList }) {
   task.assignee_id = task.assignee?.id
   const [formData, setFormData] = useState(task)
 
-  console.log(formData)
-
-
   const handleChange = (event) => {
     setFormData({...formData,
       [event.target.name]: event.target.value
