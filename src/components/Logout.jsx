@@ -29,6 +29,7 @@ export default function Logout({ setIsAuth }) {
         console.log("Logout error", e);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <div></div>;
 }
