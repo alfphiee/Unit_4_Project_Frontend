@@ -29,14 +29,14 @@ export default function AuthPage() {
     <div className="hero min-h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
     <div className="hero-content w-full text-center grid grid-cols-2">
       <div className="max-w-md text-white">
-        <img className="invert mb-7" src={logo} />
+        <img alt="Logo of letter B with arrow down" className="invert mb-7" src={logo} />
         <h1 className="text-5xl font-bold">Welcome to BREAKdown</h1>
         <p className="py-6">Translate your idea from your head to reality. Streamline your Project Journey with a simple and effective Planning and Task Management tool!</p>
       </div>
       <div className="card p-3 shrink-0 w-full max-w-sm shadow-2xl bg-base-100 justify-self-center">
         <div role="tablist" className="tabs tabs-boxed mb-4">
-          <a role="tab" onClick={() => handleTabClick('login')} className={loginClass}>Login</a>
-          <a role="tab" onClick={() => handleTabClick('signup')} className={signupClass}>Sign up</a>
+          <button role="tab" onClick={() => handleTabClick('login')} className={loginClass}>Login</button>
+          <button role="tab" onClick={() => handleTabClick('signup')} className={signupClass}>Sign up</button>
         </div>
           { 
           isLogin 

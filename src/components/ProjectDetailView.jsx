@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode'
 import axios from 'axios';
 import { useUser } from "../context/UserContext";
 
@@ -44,7 +43,7 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
    }
 
   const handleDelete = async () => {
-    const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`)
+    await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/`)
     deleteProject(projectId)
     navigate('/')
   }
@@ -78,6 +77,7 @@ export default function ProjectDetailView({deleteProject, updateProject}) {
     setProject(sanitizedData);
     setCollaboratorEmailList(sanitizedData.collaborators.map(collaborator => collaborator.email))
   });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const options = [['PL', 'Planning'], ['IP', 'In Progress'], ['CO', 'Completed'], ['OH', 'On Hold']]

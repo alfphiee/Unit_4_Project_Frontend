@@ -18,6 +18,7 @@ export default function Navbar({isAuth, setIsAuth}) {
 
   useEffect(() => {
     if(isAuth) fetchUserData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth])
 
 
@@ -30,7 +31,7 @@ export default function Navbar({isAuth, setIsAuth}) {
       <>
       <div>
         <ul className="menu menu-horizontal px-1">
-          <li><a>My Tasks</a></li>
+          <li>My Tasks</li>
         </ul>
       </div>
       <div className="dropdown dropdown-end">

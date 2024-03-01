@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
 import ProjectListView from '../components/ProjectListView'
-import LoginView from '../components/LoginView'
-import Login from '../components/LoginView'
 import Logout from '../components/Logout'
 import TaskListView from '../components/TaskListView'
 import ProjectDetailView from '../components/ProjectDetailView'
