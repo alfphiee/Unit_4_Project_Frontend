@@ -34,6 +34,7 @@ export default function TaskListView() {
 
   useEffect(() => {
     fetchProjectData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId])
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function TaskListView() {
   }
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
   
     // Dropped outside the list
     if (!destination) {

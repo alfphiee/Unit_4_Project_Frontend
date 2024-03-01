@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 import axios from 'axios'
 import { NotebookPen, Hammer, CheckSquare } from 'lucide-react'
 
@@ -24,6 +23,7 @@ export default function ProjectListView({projectList, setProjectList}) {
       }
   })
     .then((response) => setProjectList(response.data))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
