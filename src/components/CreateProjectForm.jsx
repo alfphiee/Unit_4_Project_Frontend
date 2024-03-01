@@ -9,6 +9,7 @@ export default function CreateProjectForm({ onSubmit }) {
     description: '',
     start_date: '',
     end_date: '',
+    github_url: ''
   })
 
   const handleChange = (event) => {
@@ -23,10 +24,14 @@ export default function CreateProjectForm({ onSubmit }) {
       const token = localStorage.getItem('access_token')
       const decoded = jwtDecode(token)
       const userId = decoded.user_id
-      formData.owner = userId
+      formData.owner_id = userId
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/projects/`, {
         ...formData
-      })
+      }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("access_token")}`
+        }
+    })
       document.getElementById('create_project').close()
       onSubmit(response.data)
     } catch (error) {
@@ -57,6 +62,12 @@ export default function CreateProjectForm({ onSubmit }) {
           <label className="input input-bordered flex items-center gap-2">
             End Date:
             <input type="date" name="end_date" value={formData['end_date']} onChange={handleChange} className="grow" />
+          </label>
+        </div>
+        <div className="form-control m-3">
+          <label className="input input-bordered flex items-center gap-2">
+            Github Url:
+            <input type="text" className="grow" name="github_url" value={formData['github_url']} onChange={handleChange} />
           </label>
         </div>
         <button type="submit" className='btn btn-secondary w-full'><span className="text-white">Submit</span></button>

@@ -4,6 +4,7 @@ import ProjectListView from '../components/ProjectListView'
 import Logout from '../components/Logout'
 import TaskListView from '../components/TaskListView'
 import ProjectDetailView from '../components/ProjectDetailView'
+import UserTaskView from '../components/UserTaskView'
 
 export default function MainPage({setIsAuth}) {
   const [projectList, setProjectList] = useState([])
@@ -28,6 +29,7 @@ export default function MainPage({setIsAuth}) {
         <Route path='/projects/:projectId/tasks' element={<TaskListView />} />
         <Route path='/projects/:projectId' element={<ProjectDetailView deleteProject={deleteProject} updateProject={updateProject} />} />
         <Route path='/logout' element={<Logout setIsAuth={setIsAuth} />} />
+        <Route path='/tasks' element={<UserTaskView />} />
     </Routes>
     </div>
   )

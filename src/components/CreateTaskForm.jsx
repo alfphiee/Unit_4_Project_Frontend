@@ -6,7 +6,7 @@ export default function CreateTaskForm({projectId, assignees  ,addTask}) {
     title: '',
     description: '',
     status: 'TD',
-    assignee_id: null
+    assignee_id: ''
   })
 
   
@@ -20,7 +20,7 @@ export default function CreateTaskForm({projectId, assignees  ,addTask}) {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/tasks/`, 
-    formData)
+    {...formData, assignee_id: formData.assignee_id || null})
     addTask(response.data)
     document.getElementById('create_task').close()
 
@@ -42,7 +42,7 @@ export default function CreateTaskForm({projectId, assignees  ,addTask}) {
       </select>
       <label htmlFor="task-assignee" className="text-right">Assignee</label>
       <select className="select select-bordered col-span-3 w-full max-w-xs" id="task-assignee" name="assignee_id" value={formData.assignee_id} onChange={handleChange}>
-        <option value={null}>None</option>
+        <option value=''>None</option>
         {assignees.map(assignee => (
           <option key={assignee.id} value={assignee.id}>{assignee.username}</option>
         ))}

@@ -31,7 +31,7 @@ export default function Navbar({isAuth, setIsAuth}) {
       <>
       <div>
         <ul className="menu menu-horizontal px-1">
-          <li>My Tasks</li>
+          <li className="mr-3"><Link to='/tasks'>My Tasks</Link></li>
         </ul>
       </div>
       <div className="dropdown dropdown-end">
