@@ -1,15 +1,37 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useUser } from '../context/UserContext'
+import axios from 'axios'
 
 export default function ProjectView({ project }) {
 
   const { userId } = useUser()
-  
+  const [taskList, setTaskList] = useState([])
+
+  const totalTasks = taskList.length
+  const completedTasks = taskList.filter(task => task.status === 'CO').length
+  let percentage = 0
+  if (totalTasks !== 0) percentage = Math.round((completedTasks / totalTasks) * 100)
+
   const handleButtonClick = (event) => {
     event.stopPropagation();
-    const url = "https://example.com";
+    const url = project.github_url;
     window.open(url, '_blank');
   }
+
+  const fetchTaskData = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/projects/${project.id}/tasks`)
+      setTaskList(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTaskData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   const isOwner = userId === project.owner.id
 
@@ -35,7 +57,7 @@ export default function ProjectView({ project }) {
       state: { project }
     }}>
     <div className="card m-2 lg:card-side bg-base-300 hover:bg-base-200 shadow-xl">
-  <figure className="lg:w-[150px] ml-2"><div className="radial-progress text-primary" style={{"--value":70}} role="progressbar">70%</div>
+  <figure className="lg:w-[150px] ml-2"><div className="radial-progress text-primary" style={{"--value":percentage}} role="progressbar">{percentage}%</div>
 </figure>
   <div className="card-body pl-4">
     <div className="flex items-center">
